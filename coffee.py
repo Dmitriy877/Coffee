@@ -2,8 +2,8 @@ import json
 import requests
 import os
 import folium
-from pprint import pprint
 from geopy import distance
+from dotenv import load_dotenv
 
 
 def fetch_coordinates(apikey, address):
@@ -30,13 +30,14 @@ def get_near_place(place):
 
 def main():
 
-    apikey = '482a701f-8a4e-4384-ac71-575222273d75'
+    load_dotenv()
+
+    apikey = os.getenv("YANDEX_API_KEY")
 
     address_a = input("Где вы находитесь:")
 
     cords_a = fetch_coordinates(apikey, address_a)
 
-    print("Ваши координаты:", cords_a)
 
     longitude_a, latitude_a = cords_a
     longitude_a_float = float(longitude_a)
@@ -68,8 +69,6 @@ def main():
 
     coffee_list_near = sorted(new_coffee_list, key=get_near_place)
     coffee_list_near_first = coffee_list_near[:5]
-
-    pprint(coffee_list_near_first)
 
 
     m = folium.Map(cords_revert_a, zoom_start=12)
